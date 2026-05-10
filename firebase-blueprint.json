@@ -1,0 +1,85 @@
+{
+  "entities": {
+    "Category": {
+      "title": "Category",
+      "description": "Product categories like Tea, Milk Tea, Fruit Tea.",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string", "description": "Category name" },
+        "order": { "type": "number", "description": "Display order" },
+        "active": { "type": "boolean", "default": true }
+      },
+      "required": ["name", "order"]
+    },
+    "Product": {
+      "title": "Product",
+      "description": "Individual tea drinks.",
+      "type": "object",
+      "properties": {
+        "categoryId": { "type": "string", "description": "ID of the category" },
+        "name": { "type": "string", "description": "Product name" },
+        "description": { "type": "string", "description": "Flavor profiles or ingredients" },
+        "prices": { 
+          "type": "object",
+          "description": "Price mapping for sizes (e.g., { 'M': 50, 'L': 60 })"
+        },
+        "imageUrl": { "type": "string", "description": "URL to product image" },
+        "active": { "type": "boolean", "default": true },
+        "order": { "type": "number" },
+        "options": {
+          "type": "object",
+          "description": "Allowed options like sugar levels and ice levels"
+        }
+      },
+      "required": ["categoryId", "name", "prices"]
+    },
+    "Order": {
+      "title": "Order",
+      "description": "Customer order record.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "description": "UID of the customer or 'guest'" },
+        "customerName": { "type": "string" },
+        "items": { "type": "array", "description": "List of ordered items" },
+        "totalAmount": { "type": "number" },
+        "status": { 
+          "type": "string", 
+          "enum": ["pending", "making", "ready", "completed", "cancelled"] 
+        },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" },
+        "note": { "type": "string" }
+      },
+      "required": ["items", "totalAmount", "status", "createdAt"]
+    },
+    "User": {
+      "title": "User",
+      "description": "User profile and role.",
+      "type": "object",
+      "properties": {
+        "email": { "type": "string" },
+        "role": { "type": "string", "enum": ["admin", "customer"] },
+        "displayName": { "type": "string" }
+      },
+      "required": ["email", "role"]
+    }
+  },
+  "firestore": {
+    "categories": {
+      "schema": "Category",
+      "description": "Product categories"
+    },
+    "products": {
+      "schema": "Product",
+      "description": "Drink menu items"
+    },
+    "orders": {
+      "schema": "Order",
+      "description": "Customer orders"
+    },
+    "users": {
+      "schema": "User",
+      "description": "User roles and profiles"
+    }
+  }
+}
